@@ -14,7 +14,7 @@ let server = http.createServer(function(request, response){
 	var type = url_parts[0];
 	var size = parseInt(url_parts[1]);
  	if (!isNaN(size)) {
-        if (request.method === 'POST') {
+        if (request.method === 'GET') {
             if (type === 'array') {
         		let arr = dummyArr.slice(0, size);
                 response.writeHead(200, {'content-type': 'application/json'});
@@ -44,4 +44,5 @@ let server = http.createServer(function(request, response){
 
 })
 .listen(4000, '0.0.0.0');
+console.log('listening on port 4000')
 
