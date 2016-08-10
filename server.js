@@ -24,10 +24,10 @@ let server = http.createServer(function(request, response){
     var sliced = query.nodes ? true : false;
     var img;
     var nodes = parseInt(query.nodes);
-    var nodeIndex = parseInt(query.index);
-    let blockSize = size/nodes;
+    var nodeIndex = parseInt(query.index)-1;
+    let blockSize = Math.floor(size/nodes);
     var lineXArray = Array.apply(null, Array(nodes)).map(function (x, i, thisArr) { return (i+1)*blockSize; })
-    console.log(lineXArray)
+
     if (!isNaN(size)) {
         if (request.method === 'GET') {
             if (!isNaN(size)) {
@@ -42,7 +42,6 @@ let server = http.createServer(function(request, response){
                         imageToSlices(source, lineXArray, lineYArray, {
                             saveToDataUrl: true
                         }, function(dataUrlList) {
-                            //console.log(dataUrlList);
                             let url = dataUrlList[nodeIndex].dataURI.replace(/^data:image\/(png|gif|jpeg);base64,/,'');
                             let img = new Buffer(url, 'base64');
                             
