@@ -8,5 +8,9 @@
     "start": "node server.js"
   },
   "author": "Janne Laukkanen",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "canvas": "^1.4.0",
+    "image-to-slices": "^0.1.3"
+  }
 }
