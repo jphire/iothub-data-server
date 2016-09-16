@@ -73,6 +73,6 @@ let server = http.createServer(function(request, response){
 
 
 })
-.listen(4000, '0.0.0.0');
-console.log('listening on port 4000')
+.listen(80, '0.0.0.0');
+console.log('listening on port ' + 80)
 
