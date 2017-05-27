@@ -14,6 +14,8 @@ imageToSlices.configure({
 let dummyArr = [67108864];
 dummyArr.fill(2);
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
 let server = http.createServer(function(request, response){
     var parts = url.parse(request.url, true);
     var url_parts = parts.path.substring(1).split("/");
@@ -26,7 +28,13 @@ let server = http.createServer(function(request, response){
     var nodes = parseInt(query.nodes);
     var nodeIndex = parseInt(query.index)-1;
     let blockSize = Math.floor(size/nodes);
-    var lineXArray = Array.apply(null, Array(nodes)).map(function (x, i, thisArr) { return (i+1)*blockSize; })
+    
+    if (!query.nodes) {
+    	console.log('invalid request');
+        response.writeHead(400, {'content-type' : 'application/json'});
+        response.end();
+    } else {
+    	var lineXArray = Array.apply(null, Array(nodes)).map(function (x, i, thisArr) { return (i+1)*blockSize; })
 
     if (!isNaN(size)) {
         if (request.method === 'GET') {
@@ -47,11 +55,13 @@ let server = http.createServer(function(request, response){
                             
                             response.writeHead(200, {'content-type': 'image/jpg'});
                             response.end(img, 'binary');
+			    console.log('.');
                         });
                     } else {
                         img = fs.readFileSync(source);
                     	response.writeHead(200, {'content-type': 'image/jpg'});
                     	response.end(img, 'binary');
+			console.log('.');
                     }
                 } catch (err) {
                     console.log(err)
@@ -70,7 +80,7 @@ let server = http.createServer(function(request, response){
         response.writeHead(400, {'content-type' : 'application/json'});
         response.end(JSON.stringify({"Error":"Invalid size given"}));
     }
-
+  }
 
 })
 .listen(4000, '0.0.0.0');
